@@ -1,31 +1,23 @@
 package com.sergei.news.ui.home
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.sergei.news.R
+import com.sergei.news.ui.abstr.BaseFragment
+import com.sergei.news.viewmodel.EverythingViewModel
+import com.sergei.news.viewmodel.SourcesViewModel
+import com.sergei.news.viewmodel.TopHeadsViewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 
-class HomeFragment : Fragment() {
+class HomeFragment : BaseFragment() {
 
-    private lateinit var homeViewModel: HomeViewModel
+    private val everythingViewModel: EverythingViewModel by viewModel()
+    private val sourcesViewModel: SourcesViewModel by viewModel()
+    private val topHeadsViewModel: TopHeadsViewModel by viewModel()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        homeViewModel =
-            ViewModelProviders.of(this).get(HomeViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_home, container, false)
-        val textView: TextView = root.findViewById(R.id.text_home)
-        homeViewModel.text.observe(this, Observer {
-            textView.text = it
-        })
-        return root
+    override val layoutRes: Int
+        get() = R.layout.fragment_home
+
+    override fun init(bundle: Bundle?) {
+
     }
 }

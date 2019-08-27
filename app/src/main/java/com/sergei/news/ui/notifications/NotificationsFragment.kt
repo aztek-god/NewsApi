@@ -1,31 +1,25 @@
 package com.sergei.news.ui.notifications
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import com.sergei.news.R
+import com.sergei.news.ui.abstr.BaseFragment
+import com.sergei.news.viewmodel.EverythingViewModel
+import com.sergei.news.viewmodel.SourcesViewModel
+import com.sergei.news.viewmodel.TopHeadsViewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 
-class NotificationsFragment : Fragment() {
+class NotificationsFragment : BaseFragment() {
 
-    private lateinit var notificationsViewModel: NotificationsViewModel
+    private val everythingViewModel: EverythingViewModel by viewModel()
+    private val sourcesViewModel: SourcesViewModel by viewModel()
+    private val topHeadsViewModel: TopHeadsViewModel by viewModel()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        notificationsViewModel =
-            ViewModelProviders.of(this).get(NotificationsViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_notifications, container, false)
-        val textView: TextView = root.findViewById(R.id.text_notifications)
-        notificationsViewModel.text.observe(this, Observer {
-            textView.text = it
-        })
-        return root
+    override val layoutRes: Int
+        get() = R.layout.fragment_notifications
+
+    override fun init(bundle: Bundle?) {
+
     }
+
+
 }
