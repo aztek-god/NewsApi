@@ -2,13 +2,14 @@ package com.sergei.news.model
 
 
 import com.google.gson.annotations.SerializedName
+import com.sergei.news.util.DiffUtilItem
 
 data class SourcesResponse(
     @SerializedName("sources")
     val sources: List<Source> = listOf(),
     @SerializedName("status")
     val status: String = ""
-) {
+): DiffUtilItem {
     data class Source(
         @SerializedName("category")
         val category: String = "",
@@ -24,5 +25,5 @@ data class SourcesResponse(
         val name: String = "",
         @SerializedName("url")
         val url: String = ""
-    )
+    ): DiffUtilItem
 }
