@@ -1,4 +1,4 @@
-package com.sergei.news.unit
+package com.sergei.news.util
 
 sealed class Outcome<T> {
     data class Result<T>(val data: T, val isLast: Boolean = false) : Outcome<T>()
