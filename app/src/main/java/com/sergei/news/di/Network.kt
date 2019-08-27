@@ -2,6 +2,7 @@ package com.sergei.news.di
 
 import com.google.gson.GsonBuilder
 import com.sergei.news.BuildConfig
+import com.sergei.news.service.NetworkService
 import okhttp3.Cache
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -49,5 +50,9 @@ val networkModule = module {
 
     single {
         GsonBuilder().setLenient().create()
+    }
+
+    single {
+        get<Retrofit>().create(NetworkService::class.java)
     }
 }
