@@ -1,4 +1,4 @@
-package com.sergei.news.ui.abstr
+package com.sergei.news.ui.fragment.abstr
 
 import android.os.Bundle
 import android.view.LayoutInflater
