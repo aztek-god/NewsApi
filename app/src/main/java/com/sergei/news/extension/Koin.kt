@@ -1,11 +1,17 @@
 package com.sergei.news.extension
 
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import com.sergei.news.util.Outcome
 import com.sergei.news.viewmodel.abstr.SingleLiveDataViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
-inline fun <reified T : SingleLiveDataViewModel<T>> Fragment.observableLiveData(): LiveData<Outcome<T>> {
-    return viewModel<T>().value.observableLiveData
+inline fun <reified T : SingleLiveDataViewModel<T>> Fragment.observe(crossinline observer: (Outcome<T>) -> Unit) {
+    return viewModel<T>().value.observableLiveData.observe(viewLifecycleOwner, Observer {
+        observer(it)
+    })
+}
+
+inline fun <reified T : SingleLiveDataViewModel<T>> Fragment.viewModel(): T {
+    return viewModel<T>().value
 }

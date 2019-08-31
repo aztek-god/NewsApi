@@ -1,6 +1,8 @@
 package com.sergei.news
 
-import com.sergei.news.extension.forward
+import com.sergei.news.extension.mergeList
+import com.sergei.news.extension.otherwise
+import com.sergei.news.extension.then
 import org.junit.Test
 import java.util.*
 
@@ -40,6 +42,44 @@ class AlgorithmTest {
     @Test
     fun test2() {
         recursion()
+    }
+
+    @Test
+    fun test3() {
+        val mapOf = mapOf<Int, List<String>>(
+            1 to listOf("a", "b"),
+            2 to listOf("a", "c"),
+            3 to listOf("g", "m", "c")
+        )
+
+        val newMap = mapOf.swap()
+
+        println(newMap)
+    }
+
+    fun <K, V> Map<K, List<V>>.swap(): Map<V, List<K>> {
+        val mergedList: List<V> = this.mergeList()
+        val returnMap = mutableMapOf<V, List<K>>()
+
+        mergedList.forEach {
+            val list: List<K> = this._do(it)
+
+            returnMap.put(it, list)
+        }
+
+        return returnMap
+    }
+
+    private fun <K, V> Map<K, List<V>>._do(listItem: V): List<K> {
+        val returnList = mutableListOf<K>()
+
+        forEach { key: K, list: List<V> ->
+            if (list.contains(listItem)) {
+                returnList.add(key)
+            }
+        }
+
+        return returnList
     }
 
     private fun recursion() {
@@ -117,8 +157,10 @@ class TreeNodeBuilder<T : TreeNode>(private val treeNodeList: List<T>) {
         val parentList = mutableListOf<T>()
 
         treeNodeList.forEach {
-            isParent(it) forward {
+            isParent(it) then {
                 parentList += it
+            } otherwise {
+
             }
         }
 
@@ -156,3 +198,4 @@ class TreeNodeBuilder<T : TreeNode>(private val treeNodeList: List<T>) {
 
     }
 }
+
