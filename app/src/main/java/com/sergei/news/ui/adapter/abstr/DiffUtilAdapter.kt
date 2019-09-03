@@ -2,7 +2,6 @@ package com.sergei.news.ui.adapter.abstr
 
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.sergei.news.extension.logd
 import com.sergei.news.util.DiffUtilItem
 import com.sergei.news.util.Payload
 
@@ -44,7 +43,6 @@ abstract class DiffUtilAdapter<T : DiffUtilItem, VH : RecyclerView.ViewHolder> :
         }
 
         override fun getChangePayload(oldItemPosition: Int, newItemPosition: Int): Any? {
-            logd("getChangePayload:oldItemPosition = $oldItemPosition, getChangePayload:newItemPosition = $newItemPosition", "sdvstark@gmail.com")
             val oldItem = mOldData[oldItemPosition]
             val newItem = mNewData[newItemPosition]
 

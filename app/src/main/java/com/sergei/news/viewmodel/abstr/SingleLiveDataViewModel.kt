@@ -2,27 +2,27 @@ package com.sergei.news.viewmodel.abstr
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.sergei.news.util.Outcome
+import com.sergei.news.util.Result
 
 abstract class SingleLiveDataViewModel<T> : DisposableViewModel() {
 
-    private val mMutableLiveData: MutableLiveData<Outcome<T>> = MutableLiveData()
+    private val mMutableLiveData: MutableLiveData<Result<T>> = MutableLiveData()
 
-    val observableLiveData: LiveData<Outcome<T>> get() = mMutableLiveData
+    val observableLiveData: LiveData<Result<T>> get() = mMutableLiveData
 
     fun outcomeResult(result: T) {
-        mMutableLiveData.value = Outcome.createResult(result)
+        mMutableLiveData.value = Result.createResult(result)
     }
 
     fun outcomeError(throwable: Throwable) {
-        mMutableLiveData.value = Outcome.createError(throwable)
+        mMutableLiveData.value = Result.createError(throwable)
     }
 
     fun outcomeEmptyResult() {
-        mMutableLiveData.value = Outcome.createEmptyResult()
+        mMutableLiveData.value = Result.createEmptyResult()
     }
 
     fun outcomeResult(isProgress: Boolean) {
-        mMutableLiveData.value = Outcome.createProgress(isProgress)
+        mMutableLiveData.value = Result.createProgress(isProgress)
     }
 }
