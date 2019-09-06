@@ -18,9 +18,6 @@ abstract class SingleLiveDataViewModel<T> : DisposableViewModel() {
         mMutableLiveData.value = Result.createError(throwable)
     }
 
-    fun outcomeEmptyResult() {
-        mMutableLiveData.value = Result.createEmptyResult()
-    }
 
     fun outcomeResult(isProgress: Boolean) {
         mMutableLiveData.value = Result.createProgress(isProgress)
