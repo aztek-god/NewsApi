@@ -1,6 +1,5 @@
 package com.sergei.news
 
-import junit.framework.Assert.assertEquals
 import org.junit.Test
 
 /**
@@ -11,6 +10,13 @@ import org.junit.Test
 class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+
+        val user = User(1, "Sergei")
+
+        println("canonicalName = ${user::class.java.canonicalName}")
+
+        println("canonicalName = ${User::class.java.canonicalName}")
     }
 }
+
+data class User(val id: Int, val name: String)

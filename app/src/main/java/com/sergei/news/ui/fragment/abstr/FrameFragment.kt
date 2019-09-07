@@ -1,0 +1,38 @@
+package com.sergei.news.ui.fragment.abstr
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import com.sergei.news.extension.transaction
+import kotlin.random.Random
+
+abstract class FrameFragment : BaseFragment() {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return super.onCreateView(inflater, container, savedInstanceState)?.also {
+            if (it.id != -1) {
+                it.id = Random(System.currentTimeMillis()).nextInt()
+            }
+        }
+    }
+
+    fun <T> attachFragment(fragment: T) where T : Fragment, T : Loggable {
+        childFragmentManager.transaction {
+            add(view!!.id, fragment, fragment.className)
+        }
+    }
+
+    fun <T> detachFragment(fragment: Class<T>) where T : Fragment, T : Loggable {
+        childFragmentManager.findFragmentByTag(fragment.canonicalName)?.let {
+            childFragmentManager.transaction {
+                remove(it)
+            }
+        }
+    }
+}
+
