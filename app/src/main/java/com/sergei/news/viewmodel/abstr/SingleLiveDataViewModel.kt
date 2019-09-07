@@ -10,16 +10,16 @@ abstract class SingleLiveDataViewModel<T> : DisposableViewModel() {
 
     val observableLiveData: LiveData<Result<T>> get() = mMutableLiveData
 
-    fun outcomeResult(result: T) {
-        mMutableLiveData.value = Result.createResult(result)
+    fun outcomeSuccess(result: T) {
+        mMutableLiveData.value = Result.createSuccess(result)
     }
 
-    fun outcomeError(throwable: Throwable) {
+    fun outcomeFailure(throwable: Throwable) {
         mMutableLiveData.value = Result.createError(throwable)
     }
 
 
-    fun outcomeResult(isProgress: Boolean) {
-        mMutableLiveData.value = Result.createProgress(isProgress)
+    fun outcomeProgress(isProgress: Boolean) {
+        mMutableLiveData.postValue(Result.createProgress(isProgress))
     }
 }

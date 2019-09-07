@@ -8,7 +8,7 @@ sealed class Result<T> {
     data class Progress<T>(val isProgress: Boolean) : Result<T>()
 
     companion object {
-        fun <T> createResult(result: T): Success<T> {
+        fun <T> createSuccess(result: T): Success<T> {
             return Success(result)
         }
 
