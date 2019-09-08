@@ -21,13 +21,23 @@ abstract class FrameFragment : BaseFragment() {
         }
     }
 
+    private var mAttachedFragment: Fragment? = null
+
     fun <T> attachFragment(fragment: T) where T : Fragment, T : Loggable {
+
         childFragmentManager.transaction {
+            mAttachedFragment?.let { remove(it) }
             add(view!!.id, fragment, fragment.className)
+
         }
+
+        mAttachedFragment = fragment
     }
 
     fun <T> detachFragment(fragment: Class<T>) where T : Fragment, T : Loggable {
+
+        mAttachedFragment = null
+
         childFragmentManager.findFragmentByTag(fragment.canonicalName)?.let {
             childFragmentManager.transaction {
                 remove(it)

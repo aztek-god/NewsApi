@@ -1,6 +1,7 @@
 package com.sergei.news.repository.impl
 
 import com.sergei.news.database.SourceDao
+import com.sergei.news.database.sourceIsEmpty
 import com.sergei.news.model.SourcesResponse
 import com.sergei.news.repository.SourceRepository
 import com.sergei.news.service.NetworkService

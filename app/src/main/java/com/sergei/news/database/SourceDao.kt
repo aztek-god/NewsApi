@@ -24,6 +24,6 @@ interface SourceDao {
 
     @Query("SELECT count(*) FROM source")
     fun getCount(): Single<Int>
-
-    val sourceIsEmpty: Single<Boolean> get() = getCount().flatMap { Single.just(it == 0) }
 }
+
+val SourceDao.sourceIsEmpty: Single<Boolean> get() = getCount().flatMap { Single.just(it == 0) }
