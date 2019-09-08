@@ -4,9 +4,9 @@ import android.os.Bundle
 import androidx.lifecycle.Observer
 import com.sergei.news.R
 import com.sergei.news.extension.addLifecycleObserver
-import com.sergei.news.extension.delayAction
 import com.sergei.news.extension.logd
 import com.sergei.news.ui.fragment.abstr.FrameFragment
+import com.sergei.news.ui.fragment.util.LoadingFragment
 import com.sergei.news.ui.fragment.util.TestFragment
 import com.sergei.news.util.Result
 import com.sergei.news.viewmodel.EverythingViewModel
@@ -36,9 +36,7 @@ class HomeFragment : FrameFragment() {
 
         attachFragment(TestFragment())
 
-        delayAction(3000) {
-            detachFragment(TestFragment::class.java)
-        }
+        attachFragment(LoadingFragment())
     }
 }
 
