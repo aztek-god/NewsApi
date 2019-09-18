@@ -2,21 +2,25 @@ package com.sergei.news.ui.fragment
 
 import android.os.Bundle
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.sergei.news.R
 import com.sergei.news.extension.addLifecycleObserver
+import com.sergei.news.extension.delayAction
 import com.sergei.news.extension.logd
+import com.sergei.news.extension.onEndReachedListener
+import com.sergei.news.ui.adapter.HomeAdapter
 import com.sergei.news.ui.fragment.abstr.FrameFragment
 import com.sergei.news.ui.fragment.util.LoadingFragment
-import com.sergei.news.ui.fragment.util.TestFragment
 import com.sergei.news.util.Result
-import com.sergei.news.viewmodel.EverythingViewModel
 import com.sergei.news.viewmodel.SourcesViewModel
-import org.koin.android.viewmodel.ext.android.viewModel
+import kotlinx.android.synthetic.main.fragment_home.*
+import org.koin.android.viewmodel.ext.android.sharedViewModel
 
 class HomeFragment : FrameFragment() {
 
-    private val mEverythingViewModel: EverythingViewModel by viewModel()
-    private val mSourcesViewModel: SourcesViewModel by viewModel()
+    private val mSourcesViewModel: SourcesViewModel by sharedViewModel<SourcesViewModel>(from = { parentFragment!! })
 
     override val layoutRes: Int
         get() = R.layout.fragment_home
@@ -24,19 +28,39 @@ class HomeFragment : FrameFragment() {
     override fun init(bundle: Bundle?) {
         addLifecycleObserver("HomeFragment")
 
-        mSourcesViewModel.loadSources()
 
-        mEverythingViewModel.observableLiveData.observe(viewLifecycleOwner, Observer {
+        with(homeRecyclerView) {
+            val linearLayoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+            layoutManager = linearLayoutManager
+            val homeAdapter = HomeAdapter()
+            adapter = homeAdapter
+
+
+            onEndReachedListener(400, homeAdapter, linearLayoutManager) {
+                logd("message")
+            }
+            addItemDecoration(DividerItemDecoration(context, RecyclerView.VERTICAL))
+        }
+
+        mSourcesViewModel.observableLiveData.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is Result.Success -> {
-                    logd("result = $it")
+                    (homeRecyclerView.adapter as? HomeAdapter)?.let { adapter ->
+                        adapter.update(it.data)
+                    }
+                }
+
+                is Result.Progress -> {
+                    if (it.isProgress) {
+                        attachFragment(LoadingFragment())
+                    } else {
+                        delayAction(400) {
+                            detachFragment(LoadingFragment::class.java)
+                        }
+                    }
                 }
             }
         })
-
-        attachFragment(TestFragment())
-
-        attachFragment(LoadingFragment())
     }
 }
 

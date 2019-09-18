@@ -25,16 +25,17 @@ class SourceRepositoryImpl(
                 }
         }
 
+
         return mSourceDao
             .sourceIsEmpty
             .flatMap { isEmpty ->
                 if (isEmpty) {
                     network.flatMap { sourceList ->
                         mSourceDao.insertAll(sourceList)
-                        mSourceDao.getAllLimit(pageSize, page)
+                        mSourceDao.getAllLimit(pageSize, page * pageSize)
                     }
                 } else {
-                    mSourceDao.getAllLimit(pageSize, page)
+                    mSourceDao.getAllLimit(pageSize, page * pageSize)
                 }
             }
     }

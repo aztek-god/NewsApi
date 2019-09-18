@@ -20,6 +20,6 @@ abstract class SingleLiveDataViewModel<T> : DisposableViewModel() {
 
 
     fun outcomeProgress(isProgress: Boolean) {
-        mMutableLiveData.postValue(Result.createProgress(isProgress))
+        mMutableLiveData.value = Result.createProgress(isProgress)
     }
 }
