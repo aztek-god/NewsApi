@@ -123,4 +123,15 @@ class PerfectKotlin {
                 Observable.just(it)
             }
     }
+
+    @Test
+    fun test11() {
+        val map = mutableMapOf(1 to 1, 2 to 2, 3 to 3)
+
+        val res = map.getOrPut(22) {
+            11
+        }
+
+        println(res)
+    }
 }

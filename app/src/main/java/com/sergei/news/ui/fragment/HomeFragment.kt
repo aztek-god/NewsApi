@@ -32,8 +32,6 @@ class HomeFragment : FrameFragment() {
     override fun init(bundle: Bundle?) {
         addLifecycleObserver("HomeFragment")
 
-        mSourceEverythingViewModel.load()
-
 
         with(homeRecyclerView) {
             val linearLayoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
@@ -48,7 +46,7 @@ class HomeFragment : FrameFragment() {
             addItemDecoration(DividerItemDecoration(context, RecyclerView.VERTICAL))
         }
 
-        mSourcesViewModel.observableLiveData.observe(viewLifecycleOwner, Observer {
+        mSourceEverythingViewModel.observableLiveData.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is Result.Success -> {
                     (homeRecyclerView.adapter as? HomeAdapter)?.let { adapter ->
