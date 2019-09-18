@@ -3,8 +3,6 @@ package com.sergei.news.ui.adapter
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.sergei.news.R
 import com.sergei.news.extension.inflate
 import com.sergei.news.model.EverythingResponse
@@ -13,7 +11,6 @@ import com.sergei.news.ui.adapter.abstr.DiffUtilAdapter
 import com.sergei.news.ui.adapter.abstr.DiffUtilViewHolder
 import com.sergei.news.util.DiffUtilItem
 import kotlinx.android.synthetic.main.view_holder_article_item.view.*
-import kotlinx.android.synthetic.main.view_holder_source_item.view.*
 
 class ArticleAdapter :
     DiffUtilAdapter<DiffUtilItem, DiffUtilViewHolder>() {

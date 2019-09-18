@@ -6,10 +6,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sergei.news.R
-import com.sergei.news.extension.addLifecycleObserver
-import com.sergei.news.extension.delayAction
-import com.sergei.news.extension.logd
-import com.sergei.news.extension.onEndReachedListener
+import com.sergei.news.extension.*
+import com.sergei.news.ui.adapter.ArticleAdapter
 import com.sergei.news.ui.adapter.HomeAdapter
 import com.sergei.news.ui.fragment.abstr.FrameFragment
 import com.sergei.news.ui.fragment.util.LoadingFragment
@@ -21,8 +19,6 @@ import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class HomeFragment : FrameFragment() {
-
-    private val mSourcesViewModel: SourcesViewModel by sharedViewModel<SourcesViewModel>(from = { parentFragment!! })
 
     private val mSourceEverythingViewModel: SourceEverythingViewModel by viewModel()
 
@@ -39,11 +35,11 @@ class HomeFragment : FrameFragment() {
             val homeAdapter = HomeAdapter()
             adapter = homeAdapter
 
-
-            onEndReachedListener(400, homeAdapter, linearLayoutManager) {
-                logd("message")
-            }
             addItemDecoration(DividerItemDecoration(context, RecyclerView.VERTICAL))
+
+            onBottomOfListListener(400, homeAdapter, linearLayoutManager) {
+                logd("")
+            }
         }
 
         mSourceEverythingViewModel.observableLiveData.observe(viewLifecycleOwner, Observer {
