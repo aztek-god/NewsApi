@@ -14,19 +14,25 @@ import com.sergei.news.ui.adapter.HomeAdapter
 import com.sergei.news.ui.fragment.abstr.FrameFragment
 import com.sergei.news.ui.fragment.util.LoadingFragment
 import com.sergei.news.util.Result
+import com.sergei.news.viewmodel.SourceEverythingViewModel
 import com.sergei.news.viewmodel.SourcesViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.koin.android.viewmodel.ext.android.sharedViewModel
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class HomeFragment : FrameFragment() {
 
     private val mSourcesViewModel: SourcesViewModel by sharedViewModel<SourcesViewModel>(from = { parentFragment!! })
+
+    private val mSourceEverythingViewModel: SourceEverythingViewModel by viewModel()
 
     override val layoutRes: Int
         get() = R.layout.fragment_home
 
     override fun init(bundle: Bundle?) {
         addLifecycleObserver("HomeFragment")
+
+        mSourceEverythingViewModel.load()
 
 
         with(homeRecyclerView) {

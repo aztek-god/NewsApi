@@ -1,5 +1,6 @@
 package com.sergei.news.viewmodel
 
+import com.sergei.news.extension.compose.BackgroundFlowableTransformer
 import com.sergei.news.extension.compose.BackgroundSingleTransformer
 import com.sergei.news.extension.logd
 import com.sergei.news.model.SourcesResponse
@@ -26,13 +27,13 @@ class SourcesViewModel(private val mSourceRepository: SourceRepository) :
 
             val disposable = mSourceRepository
                 .getSource(mapOf(), mCurrentPage, PAGE_SIZE)
-                .compose(BackgroundSingleTransformer())
+                .compose(BackgroundFlowableTransformer())
                 .doOnSubscribe {
                     isLoading = true
                     logd("doOnSubscribe::isLoading = $isLoading", "sdvskidex@mail.ru")
                     outcomeProgress(true)
                 }
-                .doOnEvent { _, _ ->
+                .doOnEach { _ ->
                     outcomeProgress(false)
                 }
                 .doFinally {
@@ -56,6 +57,6 @@ class SourcesViewModel(private val mSourceRepository: SourceRepository) :
     }
 
     companion object {
-        private const val PAGE_SIZE = 5
+        private const val PAGE_SIZE = 25
     }
 }

@@ -1,6 +1,7 @@
 package com.sergei.news
 
 import android.graphics.Color
+import io.reactivex.Observable
 import org.junit.Test
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.concurrent.thread
@@ -113,5 +114,13 @@ class PerfectKotlin {
         println(num) // Very unlikely to be 1000
         // every offsetInterval a different number, like for instance 973
         println("atomicInt = $atomicInt")
+    }
+
+    @Test
+    fun concatTest() {
+        val concatMap = Observable.fromIterable(listOf(1, 2, 3))
+            .concatMap {
+                Observable.just(it)
+            }
     }
 }

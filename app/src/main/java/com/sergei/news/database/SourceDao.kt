@@ -5,16 +5,17 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.sergei.news.model.SourcesResponse
+import io.reactivex.Flowable
 import io.reactivex.Single
 
 @Dao
 interface SourceDao {
 
     @Query("SELECT * FROM source")
-    fun getAll(): Single<List<SourcesResponse.Source>>
+    fun getAll(): Flowable<List<SourcesResponse.Source>>
 
     @Query("SELECT * FROM source LIMIT :offset, :limit")
-    fun getAllLimit(limit: Int, offset: Int = 0): Single<List<SourcesResponse.Source>>
+    fun getAllLimit(limit: Int, offset: Int = 0): Flowable<List<SourcesResponse.Source>>
 
     @Insert
     fun insertAll(sources: List<SourcesResponse.Source>)
@@ -23,7 +24,7 @@ interface SourceDao {
     fun delete(sources: SourcesResponse.Source)
 
     @Query("SELECT count(*) FROM source")
-    fun getCount(): Single<Int>
+    fun getCount(): Flowable<Int>
 }
 
-val SourceDao.sourceIsEmpty: Single<Boolean> get() = getCount().flatMap { Single.just(it == 0) }
+val SourceDao.sourceIsEmpty: Flowable<Boolean> get() = getCount().flatMap { Flowable.just(it == 0) }
