@@ -197,5 +197,27 @@ class TreeNodeBuilder<T : TreeNode>(private val treeNodeList: List<T>) {
         }
 
     }
+
+    @Test
+    fun simpleNumbersTest() {
+        for (number in 0..100) {
+            if (number.isSimple()) {
+                println("number = $number")
+            }
+        }
+    }
+
+    fun Int.isSimple(): Boolean {
+        if (this == 2 || this == 3 || this == 5 || this == 7) {
+            return true
+        }
+
+        if (this % 2 != 0 || this % 3 != 0 || this % 5 != 0 || this % 7 != 0) {
+            return true
+        }
+
+        return false
+    }
+
 }
 
