@@ -19,12 +19,4 @@ val database = module {
     single {
         get<AppDatabase>().sourceDao()
     }
-
-    single {
-        LocalSourceRepository(
-            RemoteSourceRepository(get()),
-            get()
-        )
-
-    } bind SourceRepository::class
 }
