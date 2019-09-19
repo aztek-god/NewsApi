@@ -1,7 +1,7 @@
 package com.sergei.news.repository.combine
 
 import com.sergei.news.model.EverythingResponse
-import com.sergei.news.model.EverythingSourceModel
+import com.sergei.news.model.util.EverythingSourceModel
 import com.sergei.news.model.SourcesResponse
 import com.sergei.news.repository.EverythingRepository
 import com.sergei.news.repository.SourceEverythingRepository
@@ -20,19 +20,24 @@ class RemoteSourceEverythingRepository(
         pageSize: Int
     ): Flowable<List<EverythingSourceModel>> {
 
-        return getSourceObservable().concatMap { source: SourcesResponse.Source ->
+        return getSourceObservable(page, pageSize).concatMap { source: SourcesResponse.Source ->
             mEverythingRepository.getEverything(mapOf("sources" to source.id))
                 .subscribeOn(Schedulers.io())
                 .flatMap { articleList: List<EverythingResponse.Article> ->
-                    Flowable.just(EverythingSourceModel(source, articleList))
+                    Flowable.just(
+                        EverythingSourceModel(
+                            source,
+                            articleList
+                        )
+                    )
                 }
         }.buffer(pageSize)
     }
 
 
-    private fun getSourceObservable(): Flowable<SourcesResponse.Source> {
+    private fun getSourceObservable(page: Int, pageSize: Int): Flowable<SourcesResponse.Source> {
         return mSourceRepository
-            .getSource(mapOf(), 1, 20)
+            .getSource(mapOf(), page, pageSize)
             .flatMap {
                 Flowable.fromIterable(it)
             }

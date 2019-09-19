@@ -37,17 +37,15 @@ class HomeFragment : FrameFragment() {
 
             addItemDecoration(DividerItemDecoration(context, RecyclerView.VERTICAL))
 
-            onBottomOfListListener(400, homeAdapter, linearLayoutManager) {
-                logd("")
+            onBottomOfListListener(1200, homeAdapter, linearLayoutManager) {
+                mSourceEverythingViewModel.load()
             }
         }
 
         mSourceEverythingViewModel.observableLiveData.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is Result.Success -> {
-                    (homeRecyclerView.adapter as? HomeAdapter)?.let { adapter ->
-                        adapter.update(it.data)
-                    }
+                    (homeRecyclerView.adapter as? HomeAdapter)?.update(it.data)
                 }
 
                 is Result.Progress -> {
