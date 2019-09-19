@@ -20,7 +20,7 @@ class RemoteSourceEverythingRepository(
         pageSize: Int
     ): Flowable<List<EverythingSourceModel>> {
 
-        return getSourceObservable().concatMap { source: SourcesResponse.Source ->
+        return getSourceObservable(page, pageSize).concatMap { source: SourcesResponse.Source ->
             mEverythingRepository.getEverything(mapOf("sources" to source.id))
                 .subscribeOn(Schedulers.io())
                 .flatMap { articleList: List<EverythingResponse.Article> ->
@@ -30,9 +30,9 @@ class RemoteSourceEverythingRepository(
     }
 
 
-    private fun getSourceObservable(): Flowable<SourcesResponse.Source> {
+    private fun getSourceObservable(page: Int, pageSize: Int): Flowable<SourcesResponse.Source> {
         return mSourceRepository
-            .getSource(mapOf(), 1, 20)
+            .getSource(mapOf(), page, pageSize)
             .flatMap {
                 Flowable.fromIterable(it)
             }

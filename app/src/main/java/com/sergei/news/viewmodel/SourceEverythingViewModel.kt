@@ -15,8 +15,12 @@ class SourceEverythingViewModel(private val mSource: SourceEverythingRepository)
     SingleLiveDataViewModel<List<EverythingSourceModel>>() {
 
     init {
+        load(4)
+    }
+
+    fun load(page: Int, pageSize: Int = 20) {
         val disposable = mSource
-            .loadSourceEverything(mapOf(), 1, 20)
+            .loadSourceEverything(mapOf(), page, pageSize)
             .compose(BackgroundFlowableTransformer())
             .subscribe(
                 {
@@ -28,6 +32,5 @@ class SourceEverythingViewModel(private val mSource: SourceEverythingRepository)
             )
 
         addDisposable(disposable)
-
     }
 }

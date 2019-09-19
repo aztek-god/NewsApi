@@ -45,9 +45,7 @@ class HomeFragment : FrameFragment() {
         mSourceEverythingViewModel.observableLiveData.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is Result.Success -> {
-                    (homeRecyclerView.adapter as? HomeAdapter)?.let { adapter ->
-                        adapter.update(it.data)
-                    }
+                    (homeRecyclerView.adapter as? HomeAdapter)?.update(it.data)
                 }
 
                 is Result.Progress -> {
