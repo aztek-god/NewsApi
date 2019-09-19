@@ -13,26 +13,34 @@ class SourceEverythingViewModel(private val mSource: SourceEverythingRepository)
     var mCurrentPage: Int = INITIAL_PAGE
         private set
 
+    var isBlocked = false
+        private set
+
     init {
         load()
     }
 
     fun load() {
-        val disposable = mSource
-            .loadSourceEverything(mapOf(), mCurrentPage, PAGE_SIZE)
-            .compose(BackgroundFlowableTransformer())
-            .subscribe(
-                {
-                    outcomeSuccess(prepareData(it))
-                },
-                {
-                    outcomeFailure(it)
-                }
-            )
+        isBlocked = true
 
-        addDisposable(disposable)
+        if (!isBlocked) {
+            val disposable = mSource
+                .loadSourceEverything(mapOf(), mCurrentPage, PAGE_SIZE)
+                .compose(BackgroundFlowableTransformer())
+                .doOnComplete { isBlocked = false }
+                .subscribe(
+                    {
+                        outcomeSuccess(prepareData(it))
+                        mCurrentPage++
+                    },
+                    {
+                        outcomeFailure(it)
+                        mCurrentPage = INITIAL_PAGE
+                    }
+                )
 
-        mCurrentPage++
+            addDisposable(disposable)
+        }
     }
 
     private fun prepareData(modelList: List<EverythingSourceModel>): List<DiffUtilItem> {

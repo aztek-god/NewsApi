@@ -12,7 +12,7 @@ import com.sergei.news.model.util.EverythingSourceModel
 import com.sergei.news.ui.adapter.abstr.DiffUtilAdapter
 import com.sergei.news.ui.adapter.abstr.DiffUtilViewHolder
 import com.sergei.news.util.DiffUtilItem
-import com.sergei.news.viewmodel.EverythingViewModel
+import com.sergei.news.util.exception.UnsupportedViewTypeException
 import kotlinx.android.synthetic.main.view_holder_source_item.view.*
 
 class HomeAdapter() :
@@ -20,26 +20,38 @@ class HomeAdapter() :
 
     private val mViewPool = RecyclerView.RecycledViewPool()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SourceArticleViewHolder {
-        when (viewType) {
-            EverythingViewModel::javaClass.hashCode() -> SourceArticleViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DiffUtilViewHolder {
+        return when (viewType) {
+            SourceArticleViewHolder.VIEW_TYPE -> SourceArticleViewHolder(
                 parent.inflate(R.layout.view_holder_source_item),
                 mViewPool
             )
 
-            BottomProgress::javaClass.hashCode() -> BottomProgressBarViewHolder(parent.inflate(R.layout.view_holder_progress_bar))
-        }
+            BottomProgressBarViewHolder.VIEW_TYPE -> BottomProgressBarViewHolder(parent.inflate(R.layout.view_holder_progress_bar))
 
-        throw Exception()
+            else -> throw UnsupportedViewTypeException()
+        }
     }
 
     override fun onBindViewHolder(holder: DiffUtilViewHolder, position: Int) {
         holder.bind(mDataBundle[position])
     }
 
-//    override fun getItemViewType(position: Int): Int {
-//        return mDataBundle[position].uid
-//    }
+    override fun getItemViewType(position: Int): Int {
+        return when (mDataBundle[position]) {
+            is EverythingSourceModel -> SourceArticleViewHolder.VIEW_TYPE
+            is BottomProgress -> BottomProgressBarViewHolder.VIEW_TYPE
+            else -> throw UnsupportedViewTypeException()
+        }
+    }
+
+    fun appendData(dataList: List<DiffUtilItem>) {
+        val mutableBundle = mDataBundle.toMutableList()
+        mutableBundle.removeIf {
+            it is BottomProgress
+        }
+        update(mutableBundle + dataList)
+    }
 
     class SourceArticleViewHolder(
         view: View,

@@ -6,16 +6,15 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sergei.news.R
-import com.sergei.news.extension.*
-import com.sergei.news.ui.adapter.ArticleAdapter
+import com.sergei.news.extension.addLifecycleObserver
+import com.sergei.news.extension.delayAction
+import com.sergei.news.extension.onBottomOfListListener
 import com.sergei.news.ui.adapter.HomeAdapter
 import com.sergei.news.ui.fragment.abstr.FrameFragment
 import com.sergei.news.ui.fragment.util.LoadingFragment
 import com.sergei.news.util.Result
 import com.sergei.news.viewmodel.SourceEverythingViewModel
-import com.sergei.news.viewmodel.SourcesViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
-import org.koin.android.viewmodel.ext.android.sharedViewModel
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class HomeFragment : FrameFragment() {
@@ -37,7 +36,7 @@ class HomeFragment : FrameFragment() {
 
             addItemDecoration(DividerItemDecoration(context, RecyclerView.VERTICAL))
 
-            onBottomOfListListener(1200, homeAdapter, linearLayoutManager) {
+            onBottomOfListListener(0, homeAdapter, linearLayoutManager) {
                 mSourceEverythingViewModel.load()
             }
         }
@@ -45,7 +44,7 @@ class HomeFragment : FrameFragment() {
         mSourceEverythingViewModel.observableLiveData.observe(viewLifecycleOwner, Observer {
             when (it) {
                 is Result.Success -> {
-                    (homeRecyclerView.adapter as? HomeAdapter)?.update(it.data)
+                    (homeRecyclerView.adapter as? HomeAdapter)?.appendData(it.data)
                 }
 
                 is Result.Progress -> {
