@@ -14,13 +14,16 @@ import io.reactivex.schedulers.Schedulers
 class SourceEverythingViewModel(private val mSource: SourceEverythingRepository) :
     SingleLiveDataViewModel<List<EverythingSourceModel>>() {
 
+    var mCurrentPage: Int = INITIAL_PAGE
+        private set
+
     init {
-        load(4)
+        load()
     }
 
-    fun load(page: Int, pageSize: Int = 20) {
+    fun load() {
         val disposable = mSource
-            .loadSourceEverything(mapOf(), page, pageSize)
+            .loadSourceEverything(mapOf(), mCurrentPage, PAGE_SIZE)
             .compose(BackgroundFlowableTransformer())
             .subscribe(
                 {
@@ -32,5 +35,12 @@ class SourceEverythingViewModel(private val mSource: SourceEverythingRepository)
             )
 
         addDisposable(disposable)
+
+        mCurrentPage++
+    }
+
+    private companion object {
+        const val INITIAL_PAGE = 1
+        const val PAGE_SIZE = 20
     }
 }

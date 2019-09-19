@@ -18,14 +18,14 @@ android {
     }
     buildTypes {
         release {
-            buildConfigField "String", "BASE_API_KEY", "\"2a144d68e21541869cc0002ad93ef897\""
+            buildConfigField "String", "BASE_API_KEY", "\"17af374b61794bddadede03a29a24325\""
             buildConfigField "String", "BASE_URL", "\"https://newsapi.org/v2/\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
 
         debug {
-            buildConfigField "String", "BASE_API_KEY", "\"2a144d68e21541869cc0002ad93ef897\""
+            buildConfigField "String", "BASE_API_KEY", "\"17af374b61794bddadede03a29a24325\""
             buildConfigField "String", "BASE_URL", "\"https://newsapi.org/v2/\""
         }
     }

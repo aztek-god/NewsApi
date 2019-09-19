@@ -37,8 +37,8 @@ class HomeFragment : FrameFragment() {
 
             addItemDecoration(DividerItemDecoration(context, RecyclerView.VERTICAL))
 
-            onBottomOfListListener(400, homeAdapter, linearLayoutManager) {
-                logd("")
+            onBottomOfListListener(1200, homeAdapter, linearLayoutManager) {
+                mSourceEverythingViewModel.load()
             }
         }
 

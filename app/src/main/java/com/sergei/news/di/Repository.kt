@@ -21,11 +21,11 @@ val repositoryModule = module {
     } bind SourceRepository::class
 
     single {
-        BufferedSourceEverythingRepository(
+//        BufferedSourceEverythingRepository(
             RemoteSourceEverythingRepository(
                 get<SourceRepository>(),
                 EverythingRemoteRepository(get<NetworkService>())
             )
-        )
+//        )
     } bind SourceEverythingRepository::class
 }
