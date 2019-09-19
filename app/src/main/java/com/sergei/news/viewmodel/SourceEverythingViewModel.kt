@@ -1,18 +1,14 @@
 package com.sergei.news.viewmodel
 
 import com.sergei.news.extension.compose.BackgroundFlowableTransformer
-import com.sergei.news.extension.compose.BackgroundSingleTransformer
-import com.sergei.news.extension.logd
-import com.sergei.news.model.EverythingResponse
-import com.sergei.news.model.EverythingSourceModel
-import com.sergei.news.model.SourcesResponse
+import com.sergei.news.model.util.BottomProgress
+import com.sergei.news.model.util.EverythingSourceModel
 import com.sergei.news.repository.SourceEverythingRepository
+import com.sergei.news.util.DiffUtilItem
 import com.sergei.news.viewmodel.abstr.SingleLiveDataViewModel
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 
 class SourceEverythingViewModel(private val mSource: SourceEverythingRepository) :
-    SingleLiveDataViewModel<List<EverythingSourceModel>>() {
+    SingleLiveDataViewModel<List<DiffUtilItem>>() {
 
     var mCurrentPage: Int = INITIAL_PAGE
         private set
@@ -27,7 +23,7 @@ class SourceEverythingViewModel(private val mSource: SourceEverythingRepository)
             .compose(BackgroundFlowableTransformer())
             .subscribe(
                 {
-                    outcomeSuccess(it)
+                    outcomeSuccess(prepareData(it))
                 },
                 {
                     outcomeFailure(it)
@@ -37,6 +33,10 @@ class SourceEverythingViewModel(private val mSource: SourceEverythingRepository)
         addDisposable(disposable)
 
         mCurrentPage++
+    }
+
+    private fun prepareData(modelList: List<EverythingSourceModel>): List<DiffUtilItem> {
+        return modelList + BottomProgress
     }
 
     private companion object {

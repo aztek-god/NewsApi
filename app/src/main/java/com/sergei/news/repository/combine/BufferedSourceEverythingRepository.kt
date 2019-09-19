@@ -1,8 +1,6 @@
 package com.sergei.news.repository.combine
 
-import com.sergei.news.model.EverythingResponse
-import com.sergei.news.model.EverythingSourceModel
-import com.sergei.news.model.SourcesResponse
+import com.sergei.news.model.util.EverythingSourceModel
 import com.sergei.news.repository.SourceEverythingRepository
 import io.reactivex.Flowable
 import java.lang.ref.Reference

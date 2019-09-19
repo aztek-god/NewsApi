@@ -1,8 +1,6 @@
 package com.sergei.news.repository
 
-import com.sergei.news.model.EverythingResponse
-import com.sergei.news.model.EverythingSourceModel
-import com.sergei.news.model.SourcesResponse
+import com.sergei.news.model.util.EverythingSourceModel
 import io.reactivex.Flowable
 
 interface SourceEverythingRepository {
